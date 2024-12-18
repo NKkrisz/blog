@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    font-family: "Montserrat", sans-serif;
+}
+:root{
+    --custom_red: #F21B3F;
+    --custom_blue: #0496FF;
+    --custom_yellow: #FFBA08;
+    --custom_black: #272D2D;
+    --custom_white: #F6F8FF;
+}
+
+.page{
+  min-height: 100vh;
+  padding-top: 60px;
+  background-color: var(--custom_black);
+  color: var(--custom_white);
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+#cards{
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu{
+    border-bottom: 1px solid gray;
+    background-color: var(--custom_yellow);
+}
+
+.customCard {
+    width: 18rem;
+    height: 26rem;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  
+  .customCard img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .cardOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3rem; /* Adjust height as needed */
+    background-color: var(--custom_red);
+    color: var(--custom_black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(100%);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .customCard:hover .cardOverlay {
+    transform: translateY(0);
+  }
+
+  .customCard:hover img{
+    opacity: 0.75;
+  }
+  
+  .post {
+    background-color: var(--custom_blue);
+    color: var(--custom_white);
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: larger;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  
+  .post:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+  }
+  
+  .post button {
+    transition: opacity 0.2s ease-in-out;
+    border: none;
+    background-color: var(--custom_yellow);
+    color: var(--custom_black);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  
+  .post button:hover {
+    opacity: 0.75;
+  }
+  
+  .post img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  
+  .post-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .post-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .post p {
+    margin: 0;
+    line-height: 1.5;
+    color: var(--custom_white);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  
+  /* Responsive Design for Smaller Screens */
+  @media (max-width: 768px) {
+    .post {
+      flex-direction: column; /* Switch to column layout */
+      align-items: center; /* Center align content */
+      text-align: center; /* Center align text */
+    }
+  
+    .post img {
+      max-width: 100%; /* Allow the image to span full width */
+      height: auto; /* Maintain aspect ratio */
+    }
+  
+    .post-content {
+      gap: 1rem;
+    }
+  
+    .post-title {
+      font-size: 1.25rem; /* Slightly smaller font for better spacing */
+    }
+  }
+  
+
+.myavatar{
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.filter-chip input {
+  display: none; /* Hide the checkbox */
+}
+
+.filter-chip label {
+  background-color: var(--custom_yellow);
+  color: var(--custom_black);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.filter-chip input:checked + label {
+  background-color: var(--custom_red); /* Highlight for checked state */
+  color: var(--custom_white);
+}
+
+.filter-chip:hover {
+  transform: scale(1.05);
+}
+
+
+.posts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.post_details{
+  color: gray;
+}
