@@ -1,5 +1,5 @@
 import {db} from "./firebaseApp";
-import {collection, addDoc,query, serverTimestamp, orderBy,onSnapshot, where, doc, getDoc, deleteDoc} from "firebase/firestore";
+import {collection, addDoc,query, serverTimestamp, orderBy,onSnapshot, where, doc, getDoc, deleteDoc, updateDoc} from "firebase/firestore";
 
 
 export const readCategories = (setCategories) => {
@@ -33,19 +33,13 @@ export const readPosts = (setPosts,selectedCategories) => {
   return unsubscribe;
 };
 
-export const readPost = async (id, setPost,setLikes) => {
+export const readPost = async (id, setPost) => {
   const docRef = doc(db, "posts", id);
-  try{
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      setPost({ ...docSnap.data(), id: docSnap.id });
-      setLikes(docSnap.data().likes.length)
-    } else {
-      console.log("A dokumentum nem található.");
-    }
-  } catch (error) {
-    console.error("Hiba a dokumentum olvasása közben:", error);
-  }
+  // const docSnap = await getDoc(docRef);
+  const unsubscribe = onSnapshot(docRef, (snapshot)=>{
+    setPost({...snapshot.data(), id:snapshot.id});
+  })
+  return unsubscribe
 };
 
 export const deleteFile=async (photoURL)=>{
@@ -65,6 +59,42 @@ export const deletePost=async (id)=>{
   const docRef= doc(db, "posts", id);
   await deleteDoc(docRef)
 }
+
+export const toggleLike = async (id, uid) => {
+  // return new Promise(async (resolve, reject)=>{
+  //   const docRef=doc(db, "posts", id)
+  //   const docSnap = await getDoc(docRef)
+  //   const likesArr = docSnap.data().likes || []
+  //   if(likesArr.includes(uid)){
+  //     await updateDoc(docRef, {likes:likesArr.filter(id=>id!=uid)})
+  //     resolve()
+  //     console.log("lick torles: " + docSnap.data().likes);
+  //   } else {
+  //     await updateDoc(docRef, {likes:[...likesArr, uid]})
+  //     resolve()
+  //     console.log("lick: "  + docSnap.data().likes);
+  //   }
+  // })
+  const docRef = doc(db, "posts", id)
+  const docSnap = await getDoc(docRef)
+  const likesArr = docSnap.data().likes || []
+
+  if(likesArr.includes(uid)){
+    console.log("remove lick");
+    await updateDoc(docRef, {likes:likesArr.filter(id => id != uid)})
+  } else {
+    console.log("lick");
+    await updateDoc(docRef,{likes:[...likesArr, uid]})
+  }
+}
+
+// export const readLikes = async (id, setLikes) => {
+//   const docRef = doc(db, "posts", id);
+//   const docSnap = await getDoc(docRef);
+//   setLikes(docSnap.data().likes.length);
+//   console.log("readlikes:"+docSnap.data().likes);
+  
+// };
 
 /*
     

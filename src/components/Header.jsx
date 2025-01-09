@@ -14,7 +14,8 @@ export const Header=()=> {
   const [avatar, setAvatar] = useState(null)
   useEffect(()=>{
     user?.photoURL && setAvatar(extractUrlAndId(user.photoURL).url)
-  },[user])
+    !user && setAvatar(null)
+  },[user, user?.photoURL])
   const toggle = () => setIsOpen(!isOpen);
 
   return (

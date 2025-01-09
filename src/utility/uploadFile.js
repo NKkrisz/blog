@@ -13,7 +13,7 @@ export const uploadFile = async (file) => {
     }
 }
 
-const URL = "https://localhost:5000/post/"
+const URL = "http://localhost:5000/post/"
 export const deletePhoto = async (id) => {
     console.log(id);
     try {

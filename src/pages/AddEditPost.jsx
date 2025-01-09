@@ -7,10 +7,12 @@ import { useForm } from 'react-hook-form'
 import { Story } from '../components/Story'
 import { uploadFile } from '../utility/uploadFile'
 import { BarLoader } from 'react-spinners'
-import { addPost } from '../utility/crudUtility'
+import { addPost, readPost } from '../utility/crudUtility'
 import CategDropdown from '../components/CategDropDown'
 import { CategContext } from '../context/CategContext'
 import Alerts from '../components/Alerts'
+import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export const AddEditPost = () => {
   const {user}=useContext(UserContext)
@@ -18,7 +20,17 @@ export const AddEditPost = () => {
   const [photo,setPhoto]=useState(null)
   const [story, setStory] = useState(null)
   const [uploaded, setUploaded] = useState(false)
+  const [post, setPost] = useState(null)
   const {register,handleSubmit,formState: { errors }, reset} = useForm()
+  const params = useParams()
+  console.log(params.id);
+  
+  useEffect(()=>{
+    if(params?.id) readPost(params.id, setPost)
+  }, [params?.id])
+  
+  console.log(post);
+  
 
   const {categories} = useContext(CategContext)
   const [selectedCategory, setSelectedCategory] = useState(null)  
@@ -28,7 +40,7 @@ export const AddEditPost = () => {
   const onSubmit=async(data)=>{
     setLoading(true)
     let newPostData = {
-      ...data, story, author:user.displayName, userId:user.uid, category:selectedCategory, likes:null
+      ...data, story, author:user.displayName, userId:user.uid, category:selectedCategory, likes:[]
     }
     
     try {

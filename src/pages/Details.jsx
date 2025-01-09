@@ -2,14 +2,18 @@ import React from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
-import { deletePost, readPost } from '../utility/crudUtility';
+import { deletePost, readPost, toggleLike } from '../utility/crudUtility';
 import { sanitizeHTML } from '../utility/utils';
 import { useConfirm } from 'material-ui-confirm';
 import { deletePhoto } from '../utility/uploadFile';
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
+import Alerts from '../components/Alerts';
 
 const Details = () => {
-    const [post, setPost] = useState(null)
-    const [likes, setLikes] = useState(null)
+  const {user} = useContext(UserContext)
+  const [post, setPost] = useState(null)
+  const [txt, setTxt] = useState(null)
 
   const navigate = useNavigate()
 
@@ -17,7 +21,7 @@ const Details = () => {
     console.log(params.id);
     
     useEffect(()=>{
-        readPost(params.id, setPost, setLikes)
+        readPost(params.id, setPost)
     }, [])
 
     const confirm = useConfirm()
@@ -39,6 +43,14 @@ const Details = () => {
       }
     }
 
+    const handleLikes = async () => {
+      if(!user){
+        setTxt("login pls");
+      } else {
+        toggleLike(post.id, user.uid)
+      }
+    }
+
   return (
     <div className='page'>
       <div style={{display:"flex", flexDirection:"column"}}>
@@ -48,11 +60,18 @@ const Details = () => {
             <h2>{post.title}</h2><p className='post_details'>{post.author} - {post.category}</p>
           </div>
           <p>{sanitizeHTML(post.story)}</p>
+          {post && <span>current licks: {post?.likes.length}</span>}
         </>}
       </div>
-      <button>lick 😛</button>
-      <button onClick={()=>handleDelete()}>destroy</button>
-      <button onClick={()=>navigate("/posts")}>go back</button>
+      <button onClick={()=>handleLikes()}>lick 😛</button>
+      {user && post && (user.uid == post.userId) &&
+      <>
+        <button onClick={()=>handleDelete()}>destroy</button>
+        <button onClick={()=>navigate("/update/"+post.id)}>edit</button>
+      </>
+      } 
+      {txt && <Alerts txt={txt} err={false}/>}
+      <button onClick={()=>navigate("/")}>go back</button>
     </div>
   )
 }
